@@ -1,0 +1,61 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: armsrace-mirage-1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: armsrace-mirage-1
+    spec:
+      containers:
+      - name: armsrace-mirage-1
+        image: npflan/csgo:201810111950
+        ports:
+        - containerPort: 27015
+        - containerPort: 27020
+        env:
+          - name: SERVER_HOSTNAME
+            value: "NPF FFA - CSGO Armsrace 1 - mirage"
+          - name: MAP
+            value: "de_mirage"
+          - name: MAX_PLAYERS
+            value: "12"
+          - name: TICKRATE
+            value: "60"
+          - name: GAME_TYPE
+            value: "1"
+          - name: GAME_MODE
+            value: "0"
+        resources:
+          requests:
+            memory: "4000Mi"
+            cpu: "2"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: armsrace-mirage-1
+  labels:
+    app: armsrace-mirage-1
+spec:
+  selector:
+    app: armsrace-mirage-1
+  ports:
+    - name: gametcp
+      protocol: TCP
+      port: 27015
+      targetPort: 27015
+    - name: gameudp
+      protocol: UDP
+      port: 27015
+      targetPort: 27015
+    - name: matchandhltvtcp
+      protocol: TCP
+      port: 27020
+      targetPort: 27020
+    - name: matchandhltvudp
+      protocol: UDP
+      port: 27020
+      targetPort: 27020

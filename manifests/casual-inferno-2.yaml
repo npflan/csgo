@@ -1,0 +1,61 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: casual-inferno-2
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: casual-inferno-2
+    spec:
+      containers:
+      - name: casual-inferno-2
+        image: npflan/csgo:201810111950
+        ports:
+        - containerPort: 27015
+        - containerPort: 27020
+        env:
+          - name: SERVER_HOSTNAME
+            value: "NPF FFA - CSGO Casual 2 - inferno"
+          - name: MAP
+            value: "de_inferno"
+          - name: MAX_PLAYERS
+            value: "12"
+          - name: TICKRATE
+            value: "60"
+          - name: GAME_TYPE
+            value: "0"
+          - name: GAME_MODE
+            value: "0"
+        resources:
+          requests:
+            memory: "4000Mi"
+            cpu: "2"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: casual-inferno-2
+  labels:
+    app: casual-inferno-2
+spec:
+  selector:
+    app: casual-inferno-2
+  ports:
+    - name: gametcp
+      protocol: TCP
+      port: 27015
+      targetPort: 27015
+    - name: gameudp
+      protocol: UDP
+      port: 27015
+      targetPort: 27015
+    - name: matchandhltvtcp
+      protocol: TCP
+      port: 27020
+      targetPort: 27020
+    - name: matchandhltvudp
+      protocol: UDP
+      port: 27020
+      targetPort: 27020

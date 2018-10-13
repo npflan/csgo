@@ -8,6 +8,7 @@ RUN apt-get update \
 	lib32gcc1 \
 	lib32stdc++6 \
 	ca-certificates \
+	curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install SteamCMD
